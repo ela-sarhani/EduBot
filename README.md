@@ -71,6 +71,5 @@ EduBot includes a simplified programming environment inspired by Scratch. The us
 
 ## Team
 
-Ela Sarhani
-Fraj Abdelaziz
+Ela Sarhani & Fraj Abdelaziz
 
