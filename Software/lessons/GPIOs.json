@@ -1,0 +1,244 @@
+{
+  "lesson_id": "gpio_fundamentals",
+  "title": "GPIO Fundamentals",
+  "description": "Core concepts of GPIO pins, digital signals, modes, and electrical characteristics of microcontroller I/O.",
+  "difficulty": "beginner",
+  "models": [
+    {
+      "id": "arduino_uno",
+      "name": "Arduino Uno",
+      "path": "static/models/arduino_uno.glb",
+      "description": "3D Arduino Uno model used for interactive exploration."
+    }
+  ],
+  "sections": [
+    {
+      "id": "intro",
+      "title": "What is a GPIO Pin",
+      "objective": "Understand the role and purpose of GPIO pins",
+      "model_id": "arduino_uno",
+      "visual": {
+        "kind": "flow",
+        "title": "GPIO connects software to the physical world",
+        "items": [
+          {
+            "label": "Microcontroller",
+            "detail": "runs the code"
+          },
+          {
+            "label": "GPIO Pin",
+            "detail": "reads or drives a signal"
+          },
+          {
+            "label": "LED / Button",
+            "detail": "an external component"
+          }
+        ]
+      },
+      "key_points": [
+        "GPIO stands for General Purpose Input Output",
+        "GPIO pins are used to interface a microcontroller with external components",
+        "They can be configured as input or output",
+        "They are one of the main ways a microcontroller interacts with the environment"
+      ],
+      "concepts": [
+        {
+          "name": "GPIO Pin",
+          "definition": "A configurable digital pin on a microcontroller used for input or output operations"
+        }
+      ],
+      "questions": [
+        "What is the purpose of a GPIO pin?",
+        "Why are GPIO pins important in embedded systems?"
+      ]
+    },
+    {
+      "id": "digital_signals",
+      "title": "Digital Signals: HIGH and LOW",
+      "objective": "Understand how digital signals are represented electrically",
+      "model_id": "arduino_uno",
+      "visual": {
+        "kind": "signals",
+        "title": "Two states only",
+        "items": [
+          {
+            "label": "HIGH",
+            "detail": "3.3V or 5V"
+          },
+          {
+            "label": "LOW",
+            "detail": "0V / ground"
+          }
+        ]
+      },
+      "key_points": [
+        "Digital systems use two discrete states: HIGH and LOW",
+        "HIGH corresponds to a voltage level (e.g., 3.3V or 5V depending on the system)",
+        "LOW corresponds to 0V (ground)",
+        "These states represent binary values 1 and 0"
+      ],
+      "concepts": [
+        {
+          "name": "Digital HIGH",
+          "definition": "A voltage level interpreted as logical 1"
+        },
+        {
+          "name": "Digital LOW",
+          "definition": "A voltage level interpreted as logical 0"
+        }
+      ],
+      "questions": [
+        "What does a HIGH signal represent?",
+        "What is the voltage level of a LOW signal?"
+      ]
+    },
+    {
+      "id": "input_output_modes",
+      "title": "Input vs Output Modes",
+      "objective": "Understand how GPIO pins are configured and used",
+      "model_id": "arduino_uno",
+      "visual": {
+        "kind": "compare",
+        "title": "A pin can listen or speak",
+        "left": {
+          "title": "Input",
+          "detail": "reads a button or sensor"
+        },
+        "right": {
+          "title": "Output",
+          "detail": "drives an LED or buzzer"
+        }
+      },
+      "key_points": [
+        "GPIO pins can operate in input or output mode",
+        "Input mode allows reading external signals",
+        "Output mode allows driving signals to external components",
+        "A pin must be explicitly configured in one mode at a time",
+        "Mode selection is done through firmware or registers"
+      ],
+      "concepts": [
+        {
+          "name": "Input Mode",
+          "definition": "Configuration where the GPIO pin reads external electrical signals"
+        },
+        {
+          "name": "Output Mode",
+          "definition": "Configuration where the GPIO pin generates electrical signals"
+        }
+      ],
+      "questions": [
+        "When would you configure a GPIO pin as input?",
+        "When would you configure a GPIO pin as output?"
+      ]
+    },
+    {
+      "id": "pin_electrical_characteristics",
+      "title": "Electrical Characteristics of GPIO Pins",
+      "objective": "Understand limitations and electrical behavior of GPIO pins",
+      "model_id": "arduino_uno",
+      "visual": {
+        "kind": "warning",
+        "title": "Respect the pin's current limit",
+        "items": [
+          {
+            "label": "Safe",
+            "detail": "pin current stays within spec"
+          },
+          {
+            "label": "Risk",
+            "detail": "too much current can damage hardware"
+          }
+        ]
+      },
+      "key_points": [
+        "GPIO pins operate at specific voltage levels defined by the microcontroller",
+        "Each pin has a maximum current it can safely source or sink",
+        "Exceeding current limits can damage the microcontroller",
+        "GPIO pins are not designed to drive high-power loads directly",
+        "Proper circuit design is required to protect the pin"
+      ],
+      "concepts": [
+        {
+          "name": "Current Limit",
+          "definition": "The maximum electrical current a GPIO pin can safely handle"
+        },
+        {
+          "name": "Voltage Level",
+          "definition": "The operating voltage used to represent HIGH and LOW states"
+        }
+      ],
+      "questions": [
+        "Why must we respect current limits on GPIO pins?",
+        "What could happen if a pin sources too much current?"
+      ]
+    },
+    {
+      "id": "gpio_applications",
+      "title": "Applications of GPIO",
+      "objective": "Understand how GPIO concepts are applied in real-world systems",
+      "model_id": "arduino_uno",
+      "visual": {
+        "kind": "applications",
+        "title": "GPIO is a bridge to real devices",
+        "items": [
+          {
+            "label": "Buttons",
+            "detail": "input"
+          },
+          {
+            "label": "Sensors",
+            "detail": "input"
+          },
+          {
+            "label": "LEDs",
+            "detail": "output"
+          },
+          {
+            "label": "Motors",
+            "detail": "output through a driver"
+          }
+        ]
+      },
+      "key_points": [
+        "GPIO pins are used to control actuators and read sensors",
+        "Examples include buttons, switches, LEDs, displays, and motors (via drivers)",
+        "GPIO output can be used to trigger external circuits",
+        "GPIO input can be used to detect user interaction or environmental signals",
+        "External components often require additional circuitry such as resistors or drivers"
+      ],
+      "concepts": [
+        {
+          "name": "Actuator",
+          "definition": "A device controlled by a microcontroller (e.g., LED, motor, buzzer)"
+        },
+        {
+          "name": "Sensor",
+          "definition": "A device that provides input signals to a microcontroller"
+        }
+      ],
+      "questions": [
+        "Give an example of a device controlled by a GPIO pin",
+        "Give an example of a device that sends signals to a GPIO pin"
+      ]
+    }
+  ],
+  "applications": [
+    {
+      "name": "LED Control",
+      "description": "An LED connected to GPIO number 4 should blink on and off every second. Write the code to achieve this behavior.",
+      "related_concepts": [
+        "Output Mode",
+        "Digital HIGH",
+        "Digital LOW",
+        "Current Limit"
+      ]
+    }
+  ],
+  "summary": [
+    "GPIO pins are configurable interfaces for input and output",
+    "Digital signals are represented as HIGH and LOW voltage levels",
+    "GPIO pins operate in either input or output mode",
+    "Electrical constraints such as current limits must be respected",
+    "GPIO is used as a bridge between software and the physical world"
+  ]
+}

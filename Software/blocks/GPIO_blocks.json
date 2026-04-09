@@ -1,0 +1,135 @@
+{
+  "categories": [
+    {
+      "name": "Program Structure",
+      "blocks": [
+        {
+          "type": "setup",
+          "label": "Setting Up",
+          "description": "Runs once when the system starts",
+          "has_children": true
+        },
+        {
+          "type": "loop",
+          "label": "Repeating Forever",
+          "description": "Runs continuously from power on to power off",
+          "has_children": true
+        }
+      ]
+    },
+    {
+      "name": "GPIO Configuration",
+      "blocks": [
+        {
+          "type": "pin_mode",
+          "label": "Set Pin Mode",
+          "description": "Configure a pin as input or output",
+          "params": [
+            {
+              "name": "pin",
+              "type": "number",
+              "min": 0,
+              "max": 40
+            },
+            {
+              "name": "mode",
+              "type": "dropdown",
+              "options": ["INPUT", "OUTPUT"]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "GPIO Control",
+      "blocks": [
+        {
+          "type": "digital_write",
+          "label": "Set Pin State",
+          "description": "Set a pin to HIGH or LOW",
+          "params": [
+            {
+              "name": "pin",
+              "type": "number",
+              "min": 0,
+              "max": 40
+            },
+            {
+              "name": "state",
+              "type": "dropdown",
+              "options": ["HIGH", "LOW"]
+            }
+          ]
+        },
+        {
+          "type": "digital_read",
+          "label": "Read Pin",
+          "description": "Read the current state of a pin",
+          "params": [
+            {
+              "name": "pin",
+              "type": "number",
+              "min": 0,
+              "max": 40
+            }
+          ],
+          "returns": "value"
+        }
+      ]
+    },
+    {
+      "name": "Control",
+      "blocks": [
+        {
+          "type": "delay",
+          "label": "Wait",
+          "description": "Pause execution for a specified time (measured in milliseconds)",
+          "params": [
+            {
+              "name": "duration",
+              "type": "number",
+              "min": 0,
+              "unit": "ms"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Logic",
+      "blocks": [
+        {
+          "type": "if",
+          "label": "If",
+          "description": "Execute blocks based on a condition",
+          "has_children": true,
+          "params": [
+            {
+              "name": "condition",
+              "type": "condition"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+
+  "conditions": [
+    {
+      "type": "pin_state",
+      "label": "Pin State",
+      "format": "Pin {pin} == {state}",
+      "params": [
+        {
+          "name": "pin",
+          "type": "number"
+        },
+        {
+          "name": "state",
+          "type": "dropdown",
+          "options": ["HIGH", "LOW"]
+        }
+      ]
+    }
+  ]
+}
