@@ -2230,14 +2230,7 @@ DEVELOPMENT_TEMPLATE = """
     <div class="exercise-bar">
       <h2 class="exercise-title">Exercise: {{ exercise.title }}</h2>
       <p class="exercise-desc">{{ exercise.description }}</p>
-      <p class="exercise-desc fun-line" style="margin:0;">Challenge mode: make it work, then prove it with the checker.</p>
-      {% if exercise.related_concepts %}
-        <div class="exercise-concepts">
-          {% for concept in exercise.related_concepts %}
-            <span class="chip">{{ concept }}</span>
-          {% endfor %}
-        </div>
-      {% endif %}
+      <p class="exercise-desc fun-line" style="margin:0;"></p>
     </div>
 
     <div class="main-grid">
