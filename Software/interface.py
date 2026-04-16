@@ -24,6 +24,286 @@ lesson = LessonController(str(BASE_DIR / "lessons" / "GPIOs.json"))
 memory = ConversationManager()
 ai = None
 
+INTERACTIVE_LESSON_ID = "gpio_concepts"
+
+CURRICULUM = [
+  {
+    "module": "Module 1: GPIO",
+    "lessons": [
+      {
+        "id": "gpio_concepts",
+        "title": "Lesson 1: GPIO Concepts",
+        "theory": [
+          "What is a GPIO pin",
+          "Digital HIGH vs LOW",
+          "Output vs Input modes",
+          "Electrical safety of pins",
+        ],
+        "practical": [
+          "Configure a GPIO as output and blink LED",
+          "Configure a GPIO as input and read a button state",
+          "Button press toggles LED",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 2: Digital Inputs and Basic Interaction",
+    "lessons": [
+      {
+        "id": "buttons_pull_resistors",
+        "title": "Lesson 1: Buttons and Pull Resistors",
+        "theory": [
+          "Floating inputs problem",
+          "Pull-up vs pull-down resistors",
+          "Stable digital reading",
+        ],
+        "practical": [
+          "Connect a button with pull-down resistor",
+          "Button press turns LED ON",
+          "Reverse logic using pull-up so button press turns LED OFF",
+          "Observe behavior differences",
+        ],
+      },
+      {
+        "id": "buzzer_control",
+        "title": "Lesson 2: Buzzer Control",
+        "theory": [
+          "Active vs passive buzzer (conceptual)",
+          "Generating tones using PWM",
+          "Frequency vs sound",
+        ],
+        "practical": [
+          "Turn buzzer ON and OFF with a button",
+          "Generate different tones using PWM",
+          "Short press creates beep and long press creates continuous sound",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 3: Analog Signals",
+    "lessons": [
+      {
+        "id": "analog_vs_digital_adc",
+        "title": "Lesson 1: Analog vs Digital plus ADC",
+        "theory": [
+          "Analog signals are continuous",
+          "ADC converts analog to digital values",
+          "Resolution concept such as 0 to 4095",
+        ],
+        "practical": [
+          "Read potentiometer value",
+          "Print values via serial monitor",
+          "Observe range mapping",
+        ],
+      },
+      {
+        "id": "potentiometer_input",
+        "title": "Lesson 2: Potentiometer as Input Device",
+        "theory": [
+          "Variable resistor behavior",
+          "Voltage divider concept (simplified)",
+        ],
+        "practical": [
+          "Potentiometer controls LED brightness using PWM",
+          "Map analog input to PWM output",
+          "Smooth transitions of LED intensity",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 4: Actuators and Motion Control",
+    "lessons": [
+      {
+        "id": "servo_motors",
+        "title": "Lesson 1: Servo Motors",
+        "theory": [
+          "Position control from 0 to 180 degrees",
+          "PWM-based control signals",
+          "Difference from DC motors",
+        ],
+        "practical": [
+          "Control servo angle using potentiometer",
+          "Map potentiometer to servo position",
+          "Create sweep motion automatically",
+        ],
+      },
+      {
+        "id": "dc_motors_drivers",
+        "title": "Lesson 2: DC Motors and Motor Drivers",
+        "theory": [
+          "Why motor drivers are needed",
+          "Current requirements",
+          "Direction control (H-bridge concept)",
+          "Speed control using PWM",
+        ],
+        "practical": [
+          "Control DC motor ON and OFF",
+          "Control motor speed with PWM",
+          "Change direction using motor driver inputs",
+          "Potentiometer controls motor speed",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 5: Sensors and Real-Time Systems",
+    "lessons": [
+      {
+        "id": "ultrasonic_distance_sensor",
+        "title": "Lesson 1: Ultrasonic Distance Sensor",
+        "theory": [
+          "Time-of-flight measurement",
+          "Trigger and Echo mechanism",
+          "Distance calculation concept",
+        ],
+        "practical": [
+          "Measure distance and print values",
+          "LED turns ON if object is close",
+          "Buzzer frequency increases as object approaches",
+        ],
+      },
+      {
+        "id": "imu_accelerometer_gyroscope",
+        "title": "Lesson 2: IMU (Accelerometer and Gyroscope)",
+        "theory": [
+          "Acceleration vs orientation",
+          "Motion sensing basics",
+          "Tilt detection concept",
+        ],
+        "practical": [
+          "Read IMU values",
+          "Detect tilt in one direction",
+          "Trigger buzzer when tilted beyond threshold",
+          "Use LED as status indicator",
+        ],
+      },
+      {
+        "id": "light_sensor",
+        "title": "Lesson 3: Light Sensor",
+        "theory": [
+          "Light-dependent resistance",
+          "Threshold-based detection",
+          "Environmental sensing",
+        ],
+        "practical": [
+          "Read light sensor values",
+          "Turn LED ON in darkness",
+          "Add threshold calibration",
+          "Add buzzer alert in low light",
+        ],
+      },
+      {
+        "id": "temperature_sensor",
+        "title": "Lesson 4: Temperature Sensor",
+        "theory": [
+          "Temperature sensing principle",
+          "Analog vs digital temperature sensors",
+          "ADC if analog sensor is used",
+          "Basic interpretation of sensor readings",
+        ],
+        "practical": [
+          "Read temperature values and display them on the serial monitor",
+          "Turn an LED ON when temperature exceeds a threshold",
+        ],
+      },
+      {
+        "id": "multi_sensor_logic",
+        "title": "Lesson 5: Multi-Sensor Logic",
+        "theory": [
+          "Combining multiple inputs",
+          "Logical conditions (AND, OR)",
+        ],
+        "practical": [
+          "If dark AND object close, activate buzzer",
+          "If tilted, stop motor",
+          "Implement multi-condition decision making",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 6: Data Visualisation",
+    "lessons": [
+      {
+        "id": "data_visualisation",
+        "title": "Lesson 1: Data Visualisation",
+        "theory": [
+          "Purpose of displays in embedded systems",
+          "What an OLED display is",
+          "Basic idea of I2C communication",
+          "Text rendering, updating values, clearing and refreshing display",
+        ],
+        "practical": [
+          "Initialize the OLED display",
+          "Display static text such as System Ready",
+        ],
+      },
+    ],
+  },
+  {
+    "module": "Module 7: Integration and Robotics Systems",
+    "lessons": [
+      {
+        "id": "system_design_thinking",
+        "title": "Lesson 1: System Design Thinking",
+        "theory": [
+          "Input to Processing to Output pipeline",
+          "State-based logic",
+          "Event-driven systems",
+        ],
+        "practical": [
+          "Design a system from sensors to decision to actuators",
+          "Write pseudo-code before implementation",
+        ],
+      },
+      {
+        "id": "final_project",
+        "title": "Final Project",
+        "theory": [
+          "Integrate sensing, logic, and actuation in complete robotics systems",
+        ],
+        "practical": [
+          "Obstacle avoiding robot",
+          "Smart interactive system",
+          "Traffic lights",
+          "IMU-based tilt alarm",
+          "Interactive control panel with OLED output",
+        ],
+      },
+    ],
+  },
+]
+
+
+def _build_curriculum_lesson_index():
+  lessons = []
+  lesson_by_id = {}
+  lesson_index_by_id = {}
+
+  for module_position, module in enumerate(CURRICULUM, start=1):
+    for module_lesson_position, lesson_item in enumerate(module.get("lessons", []), start=1):
+      flat_index = len(lessons)
+      entry = {
+        **lesson_item,
+        "module": module.get("module", "Module"),
+        "module_position": module_position,
+        "module_lesson_position": module_lesson_position,
+        "flat_index": flat_index,
+      }
+      lessons.append(entry)
+      lesson_id = entry.get("id")
+      if lesson_id:
+        lesson_by_id[lesson_id] = entry
+        lesson_index_by_id[lesson_id] = flat_index
+
+  return lessons, lesson_by_id, lesson_index_by_id
+
+
+ALL_CURRICULUM_LESSONS, LESSON_BY_ID, LESSON_INDEX_BY_ID = _build_curriculum_lesson_index()
+
 state_lock = threading.Lock()
 dashboard_state = {
     "assistant_message": "",
@@ -31,7 +311,10 @@ dashboard_state = {
     "current_section_index": None,
     "finished": False,
     "error": "",
-  "development_assistant_messages": [],
+    "development_assistant_messages": [],
+    "curriculum_notice": "",
+    "completed_lessons": [],
+    "unlocked_lesson_index": 0,
 }
 
 
@@ -141,15 +424,61 @@ def build_model_config(section, model):
   }
 
 
+def is_lesson_completed(lesson_id):
+  return lesson_id in set(dashboard_state.get("completed_lessons", []))
+
+
+def is_lesson_unlocked(lesson_id):
+  lesson_index = LESSON_INDEX_BY_ID.get(lesson_id)
+  if lesson_index is None:
+    return False
+
+  return lesson_index <= dashboard_state.get("unlocked_lesson_index", 0)
+
+
+def get_next_lesson(lesson_id):
+  lesson_index = LESSON_INDEX_BY_ID.get(lesson_id)
+  if lesson_index is None:
+    return None
+
+  next_index = lesson_index + 1
+  if next_index >= len(ALL_CURRICULUM_LESSONS):
+    return None
+
+  return ALL_CURRICULUM_LESSONS[next_index]
+
+
+def mark_lesson_complete(lesson_id):
+  lesson_index = LESSON_INDEX_BY_ID.get(lesson_id)
+  if lesson_index is None:
+    return None
+
+  completed = list(dashboard_state.get("completed_lessons", []))
+  if lesson_id not in completed:
+    completed.append(lesson_id)
+  dashboard_state["completed_lessons"] = completed
+
+  max_unlock = min(lesson_index + 1, len(ALL_CURRICULUM_LESSONS) - 1)
+  dashboard_state["unlocked_lesson_index"] = max(dashboard_state.get("unlocked_lesson_index", 0), max_unlock)
+  return get_next_lesson(lesson_id)
+
+
+def reset_theory_session():
+  lesson.current_section_index = 0
+  memory.history.clear()
+  dashboard_state["assistant_message"] = ""
+  dashboard_state["status_message"] = "Lesson restarted."
+  dashboard_state["current_section_index"] = None
+  dashboard_state["finished"] = False
+  dashboard_state["error"] = ""
+  dashboard_state["development_assistant_messages"] = []
+
+
 def reset_session():
-    lesson.current_section_index = 0
-    memory.history.clear()
-    dashboard_state["assistant_message"] = ""
-    dashboard_state["status_message"] = "Lesson restarted."
-    dashboard_state["current_section_index"] = None
-    dashboard_state["finished"] = False
-    dashboard_state["error"] = ""
-    dashboard_state["development_assistant_messages"] = []
+  reset_theory_session()
+  dashboard_state["curriculum_notice"] = ""
+  dashboard_state["completed_lessons"] = []
+  dashboard_state["unlocked_lesson_index"] = 0
 
 
 def render_visual(section):
@@ -325,28 +654,31 @@ def part_explanation():
 
 
 def ensure_assistant_message():
-    if dashboard_state["finished"] or not has_active_section():
-        return
+  if not is_lesson_unlocked(INTERACTIVE_LESSON_ID):
+    return
 
-    current_index = lesson.current_section_index
-    if dashboard_state["current_section_index"] == current_index and dashboard_state["assistant_message"]:
-        return
+  if dashboard_state["finished"] or not has_active_section():
+    return
 
-    section = get_current_section()
-    if section is None:
-        return
+  current_index = lesson.current_section_index
+  if dashboard_state["current_section_index"] == current_index and dashboard_state["assistant_message"]:
+    return
 
-    try:
-        response = build_ai().generate_response(section, memory.format_for_prompt())
-    except Exception as exc:  # pragma: no cover - surfaced in UI
-        dashboard_state["error"] = str(exc)
-        dashboard_state["assistant_message"] = ""
-        return
+  section = get_current_section()
+  if section is None:
+    return
 
-    dashboard_state["assistant_message"] = response
-    dashboard_state["current_section_index"] = current_index
-    dashboard_state["status_message"] = ""
-    memory.add_message("assistant", response)
+  try:
+    response = build_ai().generate_response(section, memory.format_for_prompt())
+  except Exception as exc:  # pragma: no cover - surfaced in UI
+    dashboard_state["error"] = str(exc)
+    dashboard_state["assistant_message"] = ""
+    return
+
+  dashboard_state["assistant_message"] = response
+  dashboard_state["current_section_index"] = current_index
+  dashboard_state["status_message"] = ""
+  memory.add_message("assistant", response)
 
 
 def mark_section_complete():
@@ -358,68 +690,167 @@ def mark_section_complete():
 
 
 @app.route("/", methods=["GET"])
-def index():
+def curriculum_index():
+  with state_lock:
+    notice = dashboard_state.get("curriculum_notice", "")
+    dashboard_state["curriculum_notice"] = ""
+
+    modules = []
+    for module in CURRICULUM:
+      module_lessons = []
+      for lesson_item in module.get("lessons", []):
+        lesson_id = lesson_item.get("id", "")
+        lesson_index = LESSON_INDEX_BY_ID.get(lesson_id, 0)
+        module_lessons.append(
+          {
+            **lesson_item,
+            "locked": not is_lesson_unlocked(lesson_id),
+            "completed": is_lesson_completed(lesson_id),
+            "lesson_index": lesson_index + 1,
+            "open_url": url_for("theory") if lesson_id == INTERACTIVE_LESSON_ID else url_for("lesson_page", lesson_id=lesson_id),
+          }
+        )
+
+      modules.append({"module": module.get("module", "Module"), "lessons": module_lessons})
+
+    completed_count = len(dashboard_state.get("completed_lessons", []))
+
+  return render_template_string(
+    CURRICULUM_TEMPLATE,
+    modules=modules,
+    notice=notice,
+    completed_count=completed_count,
+    total_count=len(ALL_CURRICULUM_LESSONS),
+  )
+
+
+@app.route("/theory", methods=["GET"])
+def theory():
+  if not is_lesson_unlocked(INTERACTIVE_LESSON_ID):
     with state_lock:
-        ensure_assistant_message()
+      dashboard_state["curriculum_notice"] = "Finish unlocked lessons in order to access this lesson."
+    return redirect(url_for("curriculum_index"))
 
-    current_section = get_current_section()
-    current_model = get_current_model()
-    history = memory.get_history()
+  with state_lock:
+    ensure_assistant_message()
 
-    return render_template_string(
-      PAGE_TEMPLATE,
-      lesson_title=escape(lesson.get_lesson_title()),
-      current_section=current_section,
-      visual_html=render_visual(current_section) if current_section else "",
-      model_html=render_model_panel(current_section, current_model) if current_section else "",
-      model_config=build_model_config(current_section, current_model),
-      status_message=dashboard_state["status_message"],
-      error_message=dashboard_state["error"],
-      history=history,
-      finished=dashboard_state["finished"],
-    )
+  current_section = get_current_section()
+  current_model = get_current_model()
+  history = memory.get_history()
+
+  return render_template_string(
+    PAGE_TEMPLATE,
+    lesson_title=escape(lesson.get_lesson_title()),
+    current_section=current_section,
+    visual_html=render_visual(current_section) if current_section else "",
+    model_html=render_model_panel(current_section, current_model) if current_section else "",
+    model_config=build_model_config(current_section, current_model),
+    status_message=dashboard_state["status_message"],
+    error_message=dashboard_state["error"],
+    history=history,
+    finished=dashboard_state["finished"],
+  )
+
+
+@app.route("/lesson/<lesson_id>", methods=["GET"])
+def lesson_page(lesson_id):
+  lesson_item = LESSON_BY_ID.get(lesson_id)
+  if lesson_item is None:
+    return redirect(url_for("curriculum_index"))
+
+  if lesson_id == INTERACTIVE_LESSON_ID:
+    return redirect(url_for("theory"))
+
+  with state_lock:
+    if not is_lesson_unlocked(lesson_id):
+      dashboard_state["curriculum_notice"] = "This lesson is still locked. Complete previous lessons first."
+      return redirect(url_for("curriculum_index"))
+
+    completed = is_lesson_completed(lesson_id)
+
+  return render_template_string(
+    LESSON_TEMPLATE,
+    lesson_item=lesson_item,
+    completed=completed,
+  )
+
+
+@app.route("/complete-lesson/<lesson_id>", methods=["POST"])
+def complete_lesson(lesson_id):
+  lesson_item = LESSON_BY_ID.get(lesson_id)
+  if lesson_item is None:
+    return redirect(url_for("curriculum_index"))
+
+  with state_lock:
+    if not is_lesson_unlocked(lesson_id):
+      dashboard_state["curriculum_notice"] = "This lesson is still locked."
+      return redirect(url_for("curriculum_index"))
+
+    if lesson_id == INTERACTIVE_LESSON_ID and not dashboard_state["finished"]:
+      dashboard_state["curriculum_notice"] = "Finish the GPIO theory lesson before marking it complete."
+      return redirect(url_for("theory"))
+
+    next_lesson = mark_lesson_complete(lesson_id)
+    if next_lesson is None:
+      dashboard_state["curriculum_notice"] = "Progress saved."
+    else:
+      dashboard_state["curriculum_notice"] = f"Lesson complete. Unlocked: {next_lesson['title']}"
+
+  return redirect(url_for("curriculum_index"))
 
 
 @app.route("/answer", methods=["POST"])
 def answer():
-    user_input = request.form.get("answer", "").strip()
-    if not user_input:
-        return redirect(url_for("index"))
+  user_input = request.form.get("answer", "").strip()
+  if not user_input:
+    return redirect(url_for("theory"))
 
-    with state_lock:
-        dashboard_state["error"] = ""
-        dashboard_state["status_message"] = ""
-        memory.add_message("user", user_input)
+  if not is_lesson_unlocked(INTERACTIVE_LESSON_ID):
+    return redirect(url_for("curriculum_index"))
 
-        section = get_current_section()
-        if section is None:
-            dashboard_state["finished"] = True
-            return redirect(url_for("index"))
+  with state_lock:
+    dashboard_state["error"] = ""
+    dashboard_state["status_message"] = ""
+    memory.add_message("user", user_input)
 
-        if build_ai().evaluate_understanding(section, memory.format_for_prompt()):
-            dashboard_state["status_message"] = f"Section completed: {section['title']}"
-            mark_section_complete()
+    section = get_current_section()
+    if section is None:
+      dashboard_state["finished"] = True
+      return redirect(url_for("theory"))
+
+    if build_ai().evaluate_understanding(section, memory.format_for_prompt()):
+      dashboard_state["status_message"] = f"Section completed: {section['title']}"
+      mark_section_complete()
+      if dashboard_state["finished"]:
+        next_lesson = mark_lesson_complete(INTERACTIVE_LESSON_ID)
+        if next_lesson:
+          dashboard_state["status_message"] = (
+            "GPIO lesson completed. "
+            f"Next unlocked lesson: {next_lesson['title']}"
+          )
         else:
-            dashboard_state["status_message"] = "Not quite yet. Try again in your own words."
-            try:
-                response = build_ai().generate_response(section, memory.format_for_prompt())
-            except Exception as exc:  # pragma: no cover - surfaced in UI
-                dashboard_state["error"] = str(exc)
-                dashboard_state["assistant_message"] = ""
-            else:
-                dashboard_state["assistant_message"] = response
-                dashboard_state["current_section_index"] = lesson.current_section_index
-                memory.add_message("assistant", response)
+          dashboard_state["status_message"] = "GPIO lesson completed. Curriculum completed."
+    else:
+      dashboard_state["status_message"] = "Not quite yet. Try again in your own words."
+      try:
+        response = build_ai().generate_response(section, memory.format_for_prompt())
+      except Exception as exc:  # pragma: no cover - surfaced in UI
+        dashboard_state["error"] = str(exc)
+        dashboard_state["assistant_message"] = ""
+      else:
+        dashboard_state["assistant_message"] = response
+        dashboard_state["current_section_index"] = lesson.current_section_index
+        memory.add_message("assistant", response)
 
-    return redirect(url_for("index"))
+  return redirect(url_for("theory"))
 
 
 @app.route("/restart", methods=["POST"])
 def restart():
-    with state_lock:
-        reset_session()
+  with state_lock:
+    reset_theory_session()
 
-    return redirect(url_for("index"))
+  return redirect(url_for("theory"))
 
 
 def get_blocks_catalog_for_lesson(lesson_id):
@@ -887,6 +1318,418 @@ def development_check():
     )
 
   return jsonify(result)
+
+
+CURRICULUM_TEMPLATE = """
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EduBot Curriculum</title>
+  <style>
+    :root {
+      --panel: rgba(255, 255, 255, 0.92);
+      --border: rgba(120, 150, 200, 0.2);
+      --text: #1f2a44;
+      --muted: #6b7a99;
+      --accent: #7cc8ff;
+      --accent-2: #6ee7b7;
+      --hover-blue: #a5dbff;
+      --hover-mint: #8ef0c9;
+      --done: #1f8f60;
+      --locked: #7f8ba6;
+      --shadow: 0 16px 44px rgba(120, 150, 200, 0.15);
+      --glow-blue: rgba(124, 200, 255, 0.25);
+      --glow-mint: rgba(110, 231, 183, 0.25);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Segoe UI Variable", "Segoe UI", "Trebuchet MS", sans-serif;
+      background:
+        radial-gradient(circle at 10% 0%, var(--glow-blue), transparent 38%),
+        radial-gradient(circle at 90% 100%, var(--glow-mint), transparent 40%),
+        linear-gradient(160deg, #f8fbff 0%, #eef6ff 55%, #f3faff 100%);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px 16px 30px;
+    }
+
+    .hero {
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--panel));
+      box-shadow: var(--shadow);
+      margin-bottom: 14px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      letter-spacing: -0.02em;
+      font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+    }
+
+    .meta {
+      margin-top: 8px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .badge {
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 5px 10px;
+      background: rgba(255, 255, 255, 0.8);
+      font-size: 0.85rem;
+    }
+
+    .notice {
+      margin-bottom: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(124, 200, 255, 0.45);
+      background: rgba(227, 240, 255, 0.82);
+    }
+
+    .module {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95), var(--panel));
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 14px;
+    }
+
+    .module-head {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.78);
+      font-weight: 700;
+    }
+
+    .lesson-grid {
+      display: grid;
+      gap: 10px;
+      padding: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .lesson {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.84);
+      padding: 12px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .lesson h3 {
+      margin: 0;
+      font-size: 1rem;
+      letter-spacing: -0.01em;
+    }
+
+    .lesson-status {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 4px 9px;
+      font-size: 0.8rem;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .status-done {
+      color: var(--done);
+      border-color: rgba(31, 143, 96, 0.35);
+    }
+
+    .status-locked {
+      color: var(--locked);
+      border-color: rgba(156, 142, 119, 0.35);
+    }
+
+    .status-open {
+      color: #285a84;
+      border-color: rgba(124, 200, 255, 0.45);
+    }
+
+    .brief {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+      line-height: 1.4;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 9px 11px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.74);
+      cursor: pointer;
+      font: inherit;
+      transition: transform 140ms ease, border-color 140ms ease, background 140ms ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      border-color: var(--hover-blue);
+      background: rgba(165, 219, 255, 0.35);
+    }
+
+    .btn.primary {
+      border: none;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      color: #143255;
+      font-weight: 700;
+    }
+
+    .btn.primary:hover {
+      background: linear-gradient(90deg, var(--hover-blue), var(--hover-mint));
+    }
+
+    .btn[disabled] {
+      opacity: 0.55;
+      cursor: not-allowed;
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="hero">
+      <h1>EduBot Curriculum Roadmap</h1>
+      <div class="meta">
+        <div class="badge">Progress: {{ completed_count }} / {{ total_count }} lessons completed</div>
+        <div class="badge">Sequential unlock is active</div>
+      </div>
+    </div>
+
+    {% if notice %}
+      <div class="notice">{{ notice }}</div>
+    {% endif %}
+
+    {% for module in modules %}
+      <section class="module">
+        <div class="module-head">{{ module.module }}</div>
+        <div class="lesson-grid">
+          {% for lesson in module.lessons %}
+            <article class="lesson">
+              <h3>{{ lesson.title }}</h3>
+
+              {% if lesson.completed %}
+                <div class="lesson-status status-done">Completed</div>
+              {% elif lesson.locked %}
+                <div class="lesson-status status-locked">Locked</div>
+              {% else %}
+                <div class="lesson-status status-open">Unlocked</div>
+              {% endif %}
+
+              <p class="brief">{{ lesson.theory | length }} theory topics and {{ lesson.practical | length }} practical tasks.</p>
+
+              {% if lesson.locked %}
+                <button class="btn" type="button" disabled>Complete previous lesson first</button>
+              {% else %}
+                <a class="btn primary" href="{{ lesson.open_url }}">Open lesson</a>
+              {% endif %}
+            </article>
+          {% endfor %}
+        </div>
+      </section>
+    {% endfor %}
+  </div>
+</body>
+</html>
+"""
+
+
+LESSON_TEMPLATE = """
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ lesson_item.title }} - EduBot</title>
+  <style>
+    :root {
+      --bg-1: #f6faf7;
+      --bg-2: #e4efe8;
+      --card: rgba(255, 255, 255, 0.88);
+      --line: rgba(60, 110, 76, 0.25);
+      --text: #1b2b21;
+      --muted: #587164;
+      --accent: #3f8f6a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 10% 0%, rgba(63, 143, 106, 0.2), transparent 35%),
+        radial-gradient(circle at 85% 100%, rgba(102, 176, 136, 0.2), transparent 35%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    }
+
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 22px 14px;
+      display: grid;
+      gap: 14px;
+    }
+
+    .top {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px;
+      background: var(--card);
+    }
+
+    .top h1 {
+      margin: 0;
+      font-size: clamp(1.3rem, 2.3vw, 1.8rem);
+      letter-spacing: -0.02em;
+    }
+
+    .module-label {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .grid {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 12px;
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 1.02rem;
+    }
+
+    ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.5;
+    }
+
+    .actions {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--card);
+      padding: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      text-decoration: none;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 8px 10px;
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      font: inherit;
+    }
+
+    .btn.primary {
+      border: none;
+      background: linear-gradient(95deg, var(--accent), #78c19c);
+      color: #0f2d1f;
+      font-weight: 700;
+    }
+
+    .done {
+      color: #1f8f60;
+      font-weight: 700;
+    }
+
+    @media (max-width: 780px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <section class="top">
+      <h1>{{ lesson_item.title }}</h1>
+      <div class="module-label">{{ lesson_item.module }}</div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Theory</h2>
+        <ul>
+          {% for point in lesson_item.theory %}
+            <li>{{ point }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Practical Exercise</h2>
+        <ul>
+          {% for task in lesson_item.practical %}
+            <li>{{ task }}</li>
+          {% endfor %}
+        </ul>
+      </article>
+    </section>
+
+    <section class="actions">
+      <a class="btn" href="{{ url_for('curriculum_index') }}">Back to curriculum</a>
+      {% if completed %}
+        <span class="done">This lesson is already completed.</span>
+      {% else %}
+        <form method="post" action="{{ url_for('complete_lesson', lesson_id=lesson_item.id) }}">
+          <button class="btn primary" type="submit">Mark lesson as completed</button>
+        </form>
+      {% endif %}
+    </section>
+  </div>
+</body>
+</html>
+"""
 
 
 PAGE_TEMPLATE = """
@@ -1413,8 +2256,9 @@ PAGE_TEMPLATE = """
           {% if finished %}
             <div class="bubble bubble-system">
               <div class="bubble-role">Lesson</div>
-              <div>Theory learned. You can now move to the development workspace.</div>
+              <div>Theory learned. The next lesson is now unlocked in the curriculum.</div>
               <div style="margin-top: 10px;">
+                <a class="btn" href="{{ url_for('curriculum_index') }}">Back To Curriculum</a>
                 <a class="btn primary" href="{{ url_for('development_workspace') }}">Open Development Workspace</a>
               </div>
             </div>
@@ -2224,7 +3068,7 @@ DEVELOPMENT_TEMPLATE = """
         <h1>{{ lesson_title }} Development Workspace</h1>
         <div class="subtitle fun-line">Time to build. Drag blocks, experiment, and level up your embedded logic.</div>
       </div>
-      <a class="btn" href="{{ url_for('index') }}">Back To Theory</a>
+      <a class="btn" href="{{ url_for('theory') }}">Back To Theory</a>
     </div>
 
     <div class="exercise-bar">
